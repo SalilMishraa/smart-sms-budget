@@ -7,7 +7,11 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import heroImage from "@/assets/smartspend-hero.png";
 
-const Onboarding = () => {
+interface OnboardingProps {
+  onComplete?: () => void;
+}
+
+const Onboarding = ({ onComplete }: OnboardingProps) => {
   const [step, setStep] = useState(1);
   const [userData, setUserData] = useState({
     name: "",
@@ -27,7 +31,14 @@ const Onboarding = () => {
         title: "Welcome to SmartSpend! 🎉",
         description: "Your account has been set up successfully.",
       });
-      navigate("/");
+      
+      // Call the completion callback to update parent state
+      if (onComplete) {
+        onComplete();
+      }
+      
+      // Navigate to dashboard
+      navigate("/", { replace: true });
     }
   };
 

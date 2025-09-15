@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { 
   User, 
   Target, 
@@ -19,6 +20,7 @@ const Settings = () => {
   const [email, setEmail] = useState("priya.singh@example.com");
   const [monthlyBudget, setMonthlyBudget] = useState("15000");
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSaveProfile = () => {
     toast({
@@ -32,6 +34,17 @@ const Settings = () => {
       title: "Budget Updated",
       description: `Your monthly budget has been set to ₹${monthlyBudget}.`,
     });
+  };
+
+  const handleLogout = () => {
+    // Clear onboarding status and navigate to onboarding
+    localStorage.removeItem("smartspend_onboarded");
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    });
+    // Force a page reload to trigger the routing logic
+    window.location.href = "/onboarding";
   };
 
   const settingsSections = [
@@ -197,12 +210,7 @@ const Settings = () => {
         <Button
           variant="destructive"
           className="w-full"
-          onClick={() =>
-            toast({
-              title: "Logged Out",
-              description: "You have been successfully logged out.",
-            })
-          }
+          onClick={handleLogout}
         >
           <LogOut size={16} className="mr-2" />
           Logout
